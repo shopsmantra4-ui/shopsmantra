@@ -58,6 +58,30 @@
  ],
  "products": [
   {
+   "id": 12,
+   "name": "XYZ suit",
+   "cat": "kurtaSets",
+   "price": 1000,
+   "mrp": 3000,
+   "sizes": [
+    "Free"
+   ],
+   "tags": [
+    "New"
+   ],
+   "variants": [
+    {
+     "label": "black",
+     "sw": "#000000",
+     "imgs": [
+      "p12_mvdtjvhx9t6x"
+     ]
+    }
+   ],
+   "specs": [],
+   "desc": ""
+  },
+  {
    "id": 1,
    "name": "Printed Stitched Lehenga Choli (Black, Red)",
    "cat": "lehengas",
