@@ -1,0 +1,537 @@
+{
+ "categories": [
+  {
+   "key": "kurtaSets",
+   "name": "Kurta Sets",
+   "group": "clothing"
+  },
+  {
+   "key": "suitSets",
+   "name": "Suit Sets",
+   "group": "clothing"
+  },
+  {
+   "key": "kurtas",
+   "name": "Kurtas & Tops",
+   "group": "clothing"
+  },
+  {
+   "key": "coatSets",
+   "name": "Coat Sets",
+   "group": "clothing"
+  },
+  {
+   "key": "lehengas",
+   "name": "Lehenga & Skirt Sets",
+   "group": "clothing"
+  },
+  {
+   "key": "earrings",
+   "name": "Earrings",
+   "group": "jewellery"
+  },
+  {
+   "key": "necklaces",
+   "name": "Necklace Sets",
+   "group": "jewellery"
+  },
+  {
+   "key": "bangles",
+   "name": "Bangles & Kadas",
+   "group": "jewellery"
+  },
+  {
+   "key": "anklets",
+   "name": "Anklets",
+   "group": "jewellery"
+  },
+  {
+   "key": "hair",
+   "name": "Hair Accessories",
+   "group": "accessories"
+  },
+  {
+   "key": "boxes",
+   "name": "Jewellery Boxes",
+   "group": "accessories"
+  }
+ ],
+ "products": [
+  {
+   "id": 1,
+   "name": "Printed Stitched Lehenga Choli (Black, Red)",
+   "cat": "lehengas",
+   "price": 2701,
+   "mrp": 3999,
+   "sizes": [
+    "L"
+   ],
+   "tags": [
+    "Kutchi"
+   ],
+   "variants": [
+    {
+     "label": "Black, Red",
+     "sw": "#7B1E2B",
+     "imgs": [
+      "lehA_0",
+      "lehA_1",
+      "lehA_2",
+      "lehA_3"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Lehenga fabric",
+     "Pure Cotton"
+    ],
+    [
+     "Stitching",
+     "Stitched"
+    ],
+    [
+     "Pattern",
+     "Printed, Geometric Print"
+    ],
+    [
+     "In the box",
+     "1 Lehenga, 1 Choli, 1 Dupatta"
+    ]
+   ],
+   "desc": "Ajrakh-style printed cotton lehenga with a wide flare, a sleeveless choli with cowrie shell detailing and a printed dupatta. Fully stitched and ready to wear for weddings, festivals and family functions."
+  },
+  {
+   "id": 2,
+   "name": "Printed Geometric Print Stitched Lehenga Choli (Black, Maroon)",
+   "cat": "lehengas",
+   "price": 2500,
+   "mrp": 3999,
+   "sizes": [
+    "L"
+   ],
+   "tags": [
+    "Kutchi"
+   ],
+   "variants": [
+    {
+     "label": "Black, Maroon",
+     "sw": "#8B1A2B",
+     "imgs": [
+      "lehB_0",
+      "lehB_1",
+      "lehB_2",
+      "lehB_3",
+      "lehB_4"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Lehenga fabric",
+     "Pure Cotton"
+    ],
+    [
+     "Stitching",
+     "Stitched"
+    ],
+    [
+     "Pattern",
+     "Printed, Geometric Print"
+    ],
+    [
+     "In the box",
+     "1 Top, 1 Lehenga, 1 Dupatta"
+    ]
+   ],
+   "desc": "Pure cotton lehenga in maroon and black with geometric block prints, a tie-up back choli trimmed with cowrie shells and a bandhani-style dupatta with mirror patch work."
+  },
+  {
+   "id": 3,
+   "name": "Printed Geometric Print Stitched Lehenga Choli (Maroon, Dark Blue)",
+   "cat": "lehengas",
+   "price": 2800,
+   "mrp": 4500,
+   "sizes": [
+    "L",
+    "XL"
+   ],
+   "tags": [
+    "New"
+   ],
+   "variants": [
+    {
+     "label": "Maroon, Dark Blue",
+     "sw": "#1F2A55",
+     "imgs": [
+      "lehC_0",
+      "lehC_1",
+      "lehC_2",
+      "lehC_3"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Stitching",
+     "Stitched"
+    ],
+    [
+     "Pattern",
+     "Printed, Geometric Print"
+    ],
+    [
+     "In the box",
+     "1 Lehenga, 1 Choli, 1 Dupatta"
+    ]
+   ],
+   "desc": "Dark blue printed lehenga with a deep maroon border, a cowrie-trimmed choli and a matching printed dupatta. Stitched and ready to wear."
+  },
+  {
+   "id": 4,
+   "name": "Printed Stitched Lehenga Choli (Maroon, Black Border)",
+   "cat": "lehengas",
+   "price": null,
+   "mrp": null,
+   "sizes": [],
+   "tags": [
+    "New"
+   ],
+   "variants": [
+    {
+     "label": "Black, Maroon",
+     "sw": "#7A1F27",
+     "imgs": [
+      "lehD_0",
+      "lehD_1",
+      "lehD_2",
+      "lehD_3"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Lehenga fabric",
+     "Pure Cotton"
+    ],
+    [
+     "Choli fabric",
+     "Cotton"
+    ],
+    [
+     "Stitching",
+     "Stitched"
+    ],
+    [
+     "Pattern",
+     "Printed"
+    ],
+    [
+     "In the box",
+     "1 Lehenga, 1 Blouse, 1 Dupatta"
+    ]
+   ],
+   "desc": "Maroon printed cotton lehenga with a bold black and gold striped hem, an embroidered choli with cowrie shell trim and a printed dupatta."
+  },
+  {
+   "id": 5,
+   "name": "Printed Stitched Lehenga Choli (Black, Maroon)",
+   "cat": "lehengas",
+   "price": 2701,
+   "mrp": 3999,
+   "sizes": [
+    "L",
+    "XL"
+   ],
+   "tags": [],
+   "variants": [
+    {
+     "label": "Black, Maroon",
+     "sw": "#B23A62",
+     "imgs": [
+      "lehE_0",
+      "lehE_1",
+      "lehE_2",
+      "lehE_3"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Stitching",
+     "Stitched"
+    ],
+    [
+     "Pattern",
+     "Printed"
+    ],
+    [
+     "In the box",
+     "1 Lehenga, 1 Choli, 1 Dupatta"
+    ]
+   ],
+   "desc": "A rose-pink and navy printed lehenga with paisley borders, a cowrie-trimmed choli and a printed dupatta. Light cotton that stays comfortable through long functions."
+  },
+  {
+   "id": 6,
+   "name": "Metal & Fabric Kutchi Bangle Set (Pack of 2)",
+   "cat": "bangles",
+   "price": 785,
+   "mrp": 1000,
+   "sizes": [
+    "Free"
+   ],
+   "tags": [
+    "Kutchi",
+    "Bestseller"
+   ],
+   "variants": [
+    {
+     "label": "Black, Silver",
+     "sw": "#222222",
+     "imgs": [
+      "bangBlk_0",
+      "bangBlk_1",
+      "bangBlk_2"
+     ]
+    },
+    {
+     "label": "Multicolor, Silver",
+     "sw": "#E0A21B",
+     "imgs": [
+      "bangMul_0",
+      "bangMul_1",
+      "bangMul_2"
+     ]
+    },
+    {
+     "label": "Red, Silver",
+     "sw": "#B22234",
+     "imgs": [
+      "bangRed_0",
+      "bangRed_1",
+      "bangRed_2",
+      "bangRed_3"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Material",
+     "Metal, Fabric"
+    ],
+    [
+     "Size",
+     "Free size"
+    ],
+    [
+     "Pack of",
+     "2"
+    ]
+   ],
+   "desc": "Wide oxidised metal bangles wrapped in Kutchi embroidered fabric, finished with braided tassels and coin jhumka drops. Pairs well with lehengas, kurtas and other ethnic outfits."
+  },
+  {
+   "id": 7,
+   "name": "Oxidised Silver Kutchi Mirror Work Bangle (Pack of 2)",
+   "cat": "bangles",
+   "price": 291,
+   "mrp": 500,
+   "sizes": [
+    "Free"
+   ],
+   "tags": [
+    "Kutchi"
+   ],
+   "variants": [
+    {
+     "label": "Black",
+     "sw": "#1A1A1A",
+     "imgs": [
+      "kada_0",
+      "kada_1"
+     ]
+    },
+    {
+     "label": "White",
+     "sw": "#F1EFEA",
+     "imgs": [
+      "kadaWht_0",
+      "kadaWht_1",
+      "kadaWht_2"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Finish",
+     "Oxidised Silver"
+    ],
+    [
+     "Size",
+     "Free size"
+    ],
+    [
+     "Pack of",
+     "2"
+    ]
+   ],
+   "desc": "Square kada-style bangles with colourful Kutchi thread embroidery and mirror work, edged with oxidised silver ghungroo bells."
+  },
+  {
+   "id": 8,
+   "name": "12 Pair Oxidised Antique Silver Earrings Combo with Storage Box",
+   "cat": "earrings",
+   "price": 680,
+   "mrp": 1499,
+   "sizes": [
+    "Free"
+   ],
+   "tags": [
+    "Bestseller"
+   ],
+   "variants": [
+    {
+     "label": "Black, Silver",
+     "sw": "#5B5F66",
+     "imgs": [
+      "ear12_0",
+      "ear12_1",
+      "ear12_2"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Material",
+     "Velvet, Hard Board, Alloy"
+    ],
+    [
+     "Contents",
+     "12 pairs of earrings + display box"
+    ],
+    [
+     "Use",
+     "Jewellery storage and earring display"
+    ]
+   ],
+   "desc": "Twelve pairs of oxidised antique silver earrings, from jhumkas to studs and chandbalis, arranged on a velvet display stand that keeps them tangle-free. A ready gift set."
+  },
+  {
+   "id": 9,
+   "name": "Kutchi Embroidered Fabric Anklet Payal",
+   "cat": "anklets",
+   "price": 167,
+   "mrp": 499,
+   "sizes": [
+    "Free"
+   ],
+   "tags": [
+    "Kutchi"
+   ],
+   "variants": [
+    {
+     "label": "Multicolor",
+     "sw": "#C62828",
+     "imgs": [
+      "anklet_0",
+      "anklet_1",
+      "anklet_2",
+      "anklet_3"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Material",
+     "Fabric, Cotton Dori, Alloy"
+    ],
+    [
+     "Occasion",
+     "Wedding & Engagement"
+    ],
+    [
+     "Closure",
+     "Adjustable dori tie"
+    ]
+   ],
+   "desc": "Handcrafted-look fabric payal with Kutchi embroidery, mirror work and silver-tone ghungroo bells, tied with an adjustable cotton dori."
+  },
+  {
+   "id": 10,
+   "name": "Kutchi Embroidered Hair Bow Clip",
+   "cat": "hair",
+   "price": 160,
+   "mrp": 399,
+   "sizes": [
+    "Free"
+   ],
+   "tags": [
+    "Kutchi",
+    "New"
+   ],
+   "variants": [
+    {
+     "label": "Multicolor",
+     "sw": "#D32F2F",
+     "imgs": [
+      "bow_0",
+      "bow_1",
+      "bow_2"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Design",
+     "Kutchi embroidery with cowrie shells and pom-poms"
+    ],
+    [
+     "Colour",
+     "Multicolor"
+    ]
+   ],
+   "desc": "A large embroidered hair bow with mirror work, a cowrie shell centre and hanging pom-pom tassels. Clips onto a braid or half-up hairstyle for festive and party looks."
+  },
+  {
+   "id": 11,
+   "name": "12 Pair Earring Jhumka Storage Box & Jewellery Display (Black)",
+   "cat": "boxes",
+   "price": null,
+   "mrp": null,
+   "sizes": [
+    "Free"
+   ],
+   "tags": [
+    "New"
+   ],
+   "variants": [
+    {
+     "label": "Black",
+     "sw": "#111111",
+     "imgs": [
+      "box_0",
+      "box_1",
+      "box_2"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Holds",
+     "12 pairs of earrings or jhumkas"
+    ],
+    [
+     "Use",
+     "Storage, display and protection"
+    ],
+    [
+     "Colour",
+     "Black"
+    ]
+   ],
+   "desc": "A black velvet-finish box that opens into a four-step display stand with white cushioned slots for 12 pairs of earrings. Keeps jhumkas tangle-free and doubles as a vanity display."
+  }
+ ],
+ "reviews": []
+}
