@@ -35,7 +35,7 @@ const imgUrl = k => k ? `img/${k}.webp` : 'img/og.jpg';
 const pages = [];
 const add = p => pages.push(p);
 add({ path: '', page: 'home', title: `${BRAND} | Women's Clothing & Jewellery`,
-  desc: "ShopsMantra: women's clothing and jewellery for everyday, festive and wedding wear. Order on WhatsApp, Cash on Delivery available.",
+  desc: "ShopsMantra: women's clothing and jewellery for everyday, festive and wedding wear. Order easily on WhatsApp.",
   img: 'img/og.jpg', crumbs: [] });
 for (const k of [...Object.keys(D.GROUP_SLUG), ...Object.keys(D.CATS)]) {
   const t = collTitle(k);
@@ -44,7 +44,7 @@ for (const k of [...Object.keys(D.GROUP_SLUG), ...Object.keys(D.CATS)]) {
   if (g) crumbs.push([GROUP_TITLES[g], `collections/${D.collSlug(g)}/`]);
   crumbs.push([t, `collections/${D.collSlug(k)}/`]);
   add({ path: `collections/${D.collSlug(k)}/`, page: 'coll', key: k, title: `${t} | ${BRAND}`,
-    desc: `Shop ${t} at ShopsMantra. Cash on Delivery on all orders and easy ordering on WhatsApp.`,
+    desc: `Shop ${t} at ShopsMantra. Easy ordering on WhatsApp and free shipping above ₹999.`,
     img: D.CATS[k] && D.CATS[k].img ? imgUrl(D.CATS[k].img) : 'img/og.jpg', crumbs });
 }
 for (const p of D.P) {

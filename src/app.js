@@ -66,7 +66,7 @@ function card(p){
 }
 const featIcons={
   wa:'<path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12z"/>',
-  cash:'<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="3"/>',
+  shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="m9 12 2 2 4-4"/>',
   truck:'<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>'
 };
 
@@ -85,9 +85,9 @@ function home(){
     <div>
       <span class="eyebrow">ShopsMantra · Women's Fashion</span>
       <h1 class="display">Dressed for <em>every</em> occasion</h1>
-      <p class="lead">Everyday wear, festive outfits and wedding lehengas, with jewellery to complete the look. Order on WhatsApp and pay in cash when your parcel arrives.</p>
+      <p class="lead">Everyday wear, festive outfits and wedding lehengas, with jewellery to complete the look. Order easily on WhatsApp and we confirm everything with you in the chat.</p>
       <div class="ctas"><button class="btn pri" data-shop="clothing">Shop Clothing</button><button class="btn out" data-shop="jewellery">Shop Jewellery</button></div>
-      <div class="pfacts"><div><b>Up to 67%</b>off on MRP</div><div><b>Cash on Delivery</b>on every order</div><div><b>WhatsApp</b>orders & support</div></div>
+      <div class="pfacts"><div><b>Up to 67%</b>off on MRP</div><div><b>Free shipping</b>above ₹999</div><div><b>WhatsApp</b>orders & support</div></div>
     </div>
     <div class="pheroArt">
       <span class="frame"></span>
@@ -147,7 +147,7 @@ function home(){
 
   <section class="block" style="padding-block:10px 40px"><div class="wrap feats">
     <div class="feat"><svg viewBox="0 0 24 24" fill="none">${featIcons.wa}</svg><div><b>Order on WhatsApp</b><span>Your order reaches us instantly</span></div></div>
-    <div class="feat"><svg viewBox="0 0 24 24" fill="none">${featIcons.cash}</svg><div><b>Cash on Delivery</b><span>No online payment needed</span></div></div>
+    <div class="feat"><svg viewBox="0 0 24 24" fill="none">${featIcons.shield}</svg><div><b>Trusted seller</b><span>Also sold on Flipkart as ShopsMantra</span></div></div>
     <div class="feat"><svg viewBox="0 0 24 24" fill="none">${featIcons.truck}</svg><div><b>Free shipping</b><span>On orders above ₹${FREE_SHIP_ABOVE}</span></div></div>
   </div></section>
 
@@ -239,7 +239,7 @@ function renderProduct(){
         <div class="specs">
           <details open><summary>Product details</summary><p>${p.desc}</p><dl>${p.specs.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}<dt>Sold by</dt><dd>Shopsmantra LLP</dd></dl></details>
           <details><summary>${p.group==='accessories'?'Care':isJ?'Jewellery care':'Wash care'}</summary><p>${isJ?'Keep away from water, perfume and sweat. Store in a dry pouch and wipe gently with a soft dry cloth after use.':'Dry clean recommended for the first wash. After that, hand wash separately in cold water, dry in shade and iron on low heat.'}</p></details>
-          <details><summary>Delivery & payment</summary><p>Order on WhatsApp and pay by Cash on Delivery. Free shipping on orders above ₹${FREE_SHIP_ABOVE}. Delivery time and return details are confirmed with your order on WhatsApp.</p></details>
+          <details><summary>Delivery & payment</summary><p>Order on WhatsApp. We share the payment and delivery details with you in the chat. Free shipping on orders above ₹${FREE_SHIP_ABOVE}. Delivery time and return details are confirmed with your order on WhatsApp.</p></details>
         </div>
       </div>
     </div>
@@ -313,10 +313,7 @@ function checkout(){
           <div class="fld"><label for="c_city">City</label><input id="c_city" required placeholder="City"></div>
           <div class="fld full"><label for="c_state">State</label><select id="c_state" required><option value="">Select state</option>${['Andhra Pradesh','Assam','Bihar','Chhattisgarh','Delhi','Goa','Gujarat','Haryana','Himachal Pradesh','Jammu & Kashmir','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Odisha','Punjab','Rajasthan','Tamil Nadu','Telangana','Uttar Pradesh','Uttarakhand','West Bengal','Other'].map(s=>`<option>${s}</option>`).join('')}</select></div>
         </div>
-        <h2 style="margin-top:26px">Payment</h2>
-        <div class="pay">
-          <label class="payOpt"><input type="radio" name="pay" value="Cash on Delivery" checked><div><b>Cash on Delivery</b><small>Pay in cash when the parcel arrives. No advance payment.</small></div></label>
-        </div>
+        <div class="waBox" style="margin-top:22px">Your order opens in WhatsApp. We confirm availability, delivery time and payment details with you in the chat.</div>
         <div class="err" id="coErr" style="margin-top:14px" hidden>Please fill in all fields correctly: mobile must be 10 digits and pincode 6 digits.</div>
         <button class="btn pri block" type="submit" style="margin-top:18px;padding-block:15px">${WA_ICON}Place order on WhatsApp · ${inr(t.total)}</button>
         <p class="muted" style="font-size:12px;margin:10px 0 0;text-align:center">Your order details open in WhatsApp. Just tap Send and we'll confirm it there.</p>
@@ -336,9 +333,9 @@ function checkout(){
     if(!e.target.checkValidity()){$('#coErr').hidden=false;return}
     const no='SM'+Date.now().toString().slice(-7);
     const v=id=>$(id).value.trim();
-    const pay=e.target.pay.value, t2=totals();
+    const t2=totals();
     const lines=t2.items.map((l,i)=>`${i+1}. ${l.p.name}\n   ${lineMeta(l)} | Qty: ${l.qty} | ${inr(l.p.price*l.qty)}`).join('\n');
-    const msg=`*New Order ${no}*\n\n${lines}\n\nSubtotal: ${inr(t2.sub)}\nShipping: ${t2.ship?inr(t2.ship):'Free'}\n*Total: ${inr(t2.total)}*\n\n*Payment:* ${pay}\n\n*Deliver to:*\n${v('#c_name')}\n${v('#c_addr')}\n${v('#c_city')}, ${v('#c_state')} - ${v('#c_pin')}\nMobile: ${v('#c_phone')}`;
+    const msg=`*New Order ${no}*\n\n${lines}\n\nSubtotal: ${inr(t2.sub)}\nShipping: ${t2.ship?inr(t2.ship):'Free'}\n*Total: ${inr(t2.total)}*\n\n*Deliver to:*\n${v('#c_name')}\n${v('#c_addr')}\n${v('#c_city')}, ${v('#c_state')} - ${v('#c_pin')}\nMobile: ${v('#c_phone')}`;
     const name=v('#c_name').split(' ')[0].replace(/[<>&"]/g,'');
     const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
     cart=[];save();
@@ -346,7 +343,7 @@ function checkout(){
       <div class="tick"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg></div>
       <span class="eyebrow">Order ${no}</span>
       <h1 class="display">Almost done, ${name}!</h1>
-      <p class="muted">Send your order to us on WhatsApp to confirm it. You will pay in cash when it arrives.</p>
+      <p class="muted">Send your order to us on WhatsApp to confirm it. We will share the payment details in the chat.</p>
       <a class="btn pri" href="${waLink(msg)}" target="_blank" rel="noopener" style="padding:15px 28px;font-size:15px">${WA_ICON}Send order on WhatsApp</a>
       <p class="muted" style="font-size:13px;margin:0">If WhatsApp doesn't open, message us at <b>+91 90236 57098</b> with the order below.</p>
       <pre id="orderTxt" style="text-align:left;white-space:pre-wrap;background:var(--soft);border-radius:12px;padding:14px;font-size:13px;width:100%;margin:0;font-family:var(--f-body)">${esc(msg)}</pre>
@@ -358,7 +355,7 @@ function checkout(){
 }
 
 const INFO={
-  order:['How to Order','Add products to your bag and go to checkout. Fill in your delivery address. All orders are Cash on Delivery. When you tap "Place order on WhatsApp", your full order opens in WhatsApp. Send it to us and we will confirm availability and delivery time in the chat. You pay in cash when the parcel arrives.'],
+  order:['How to Order','Add products to your bag and go to checkout. Fill in your delivery address. When you tap "Place order on WhatsApp", your full order opens in WhatsApp. Send it to us and we will confirm availability, delivery time and payment details in the chat.'],
   ship:['Shipping & Returns',`Shipping is free on orders above ₹${FREE_SHIP_ABOVE}; below that a flat ₹${SHIP_FEE} applies. We confirm the delivery date for your pincode on WhatsApp when you order. For returns or exchanges, message us on WhatsApp with your order number and a photo of the product.`],
   size:['Size Help','Our lehenga cholis are fully stitched and currently come in L and XL. If you are unsure which size fits you, send us your bust and waist measurements on WhatsApp and we will suggest the right one. Bangles, anklets and hair accessories are free size.']
 };
