@@ -58,6 +58,85 @@
  ],
  "products": [
   {
+   "id": 13,
+   "name": "Gujri Print Cotton Kurta Pant Set with Dupatta (Mehendi Green)",
+   "cat": "kurtaSets",
+   "price": 999,
+   "mrp": 1500,
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "XXL."
+   ],
+   "tags": [
+    "New"
+   ],
+   "variants": [
+    {
+     "label": "Mehendi Green",
+     "sw": "#bfc41f",
+     "imgs": [
+      "p13_mveyn5n27ldj",
+      "p13_mveyn9s997h2",
+      "p13_mveynemb72wg"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Fabric",
+     "Pure Cotton"
+    ],
+    [
+     "Kurta type",
+     "Straight"
+    ],
+    [
+     "Pattern",
+     "Gujri Bandhani Print with Paisley Motifs"
+    ],
+    [
+     "Embellishment",
+     "Mirror Work on Neckline & Yoke"
+    ],
+    [
+     "Neck",
+     "Round Neck"
+    ],
+    [
+     "Sleeves",
+     "3/4 Sleeves"
+    ],
+    [
+     "Kurta length",
+     "Knee Length"
+    ],
+    [
+     "Bottom",
+     "Straight Pants with Elastic Waist"
+    ],
+    [
+     "Dupatta",
+     "Bandhani Printed Cotton Dupatta"
+    ],
+    [
+     "In the box",
+     "1 Kurta, 1 Pant, 1 Dupatta"
+    ],
+    [
+     "Wash care",
+     "Gentle hand wash / dry clean recommended"
+    ],
+    [
+     "Occasion",
+     "Festive, Navratri, Haldi, Mehendi, Casual"
+    ]
+   ],
+   "desc": "Fresh mehendi green cotton kurta set with a traditional Gujri bandhani print and elegant paisley motifs. The kurta has delicate mirror work on the neckline and yoke for a festive touch. Comes with a straight kurta, matching pants and a bandhani printed dupatta. Soft, breathable cotton that is comfortable for all-day wear. Perfect for Navratri, Haldi, Mehendi, festivals and family functions."
+  },
+  {
    "id": 12,
    "name": "Gujri Print Cotton Kurta Pant Set with Dupatta (Red)",
    "cat": "kurtaSets",
