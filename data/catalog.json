@@ -58,6 +58,83 @@
  ],
  "products": [
   {
+   "id": 12,
+   "name": "Gujri Print Cotton Kurta Pant Set with Dupatta (Red)",
+   "cat": "kurtaSets",
+   "price": 999,
+   "mrp": 1500,
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "XXL."
+   ],
+   "tags": [
+    "New"
+   ],
+   "variants": [
+    {
+     "label": "Red",
+     "sw": "#ff0000",
+     "imgs": [
+      "p12_mver0hy2r2lo",
+      "p12_mver0ouqa19e",
+      "p12_mver0ynm7th8",
+      "p12_mver12741ggb",
+      "p12_mver163edeaa"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Fabric",
+     "Gujri Print Cotton"
+    ],
+    [
+     "Kurta type",
+     "Straight"
+    ],
+    [
+     "Pattern",
+     "Gujri Bandhani Foil Print with Mirror Work"
+    ],
+    [
+     "Neck",
+     "Round Neck"
+    ],
+    [
+     "Sleeves",
+     "3/4 Sleeves"
+    ],
+    [
+     "Kurta length",
+     "Knee Length"
+    ],
+    [
+     "Bottom",
+     "Straight Pants with Elastic Waist"
+    ],
+    [
+     "Dupatta",
+     "Printed Cotton Dupatta"
+    ],
+    [
+     "In the box",
+     "1 Kurta, 1 Pant, 1 Dupatta"
+    ],
+    [
+     "Wash care",
+     "Gentle hand wash / dry clean recommended"
+    ],
+    [
+     "Occasion",
+     "Festive, Navratri, Casual, Puja"
+    ]
+   ],
+   "desc": "Rich red cotton kurta set with a traditional Gujri bandhani-style gold print and real mirror work on the hem. Comes with a straight kurta, matching pants and a printed dupatta. Soft, breathable cotton that is comfortable for all-day wear. Perfect for Navratri, festivals, pujas, family functions and gifting."
+  },
+  {
    "id": 1,
    "name": "Printed Stitched Lehenga Choli (Black, Red)",
    "cat": "lehengas",
