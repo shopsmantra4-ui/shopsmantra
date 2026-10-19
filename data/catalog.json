@@ -61,14 +61,14 @@
    "id": 13,
    "name": "Gujri Print Cotton Kurta Pant Set with Dupatta (Mehendi Green)",
    "cat": "kurtaSets",
-   "price": 999,
-   "mrp": 1500,
+   "price": 1500,
+   "mrp": 2500,
    "sizes": [
-    "S",
-    "M",
     "L",
     "XL",
-    "XXL."
+    "XXL",
+    "3XL",
+    "4XL."
    ],
    "tags": [
     "New"
