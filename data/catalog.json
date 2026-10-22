@@ -58,6 +58,64 @@
  ],
  "products": [
   {
+   "id": 15,
+   "name": "Embroidered Peplum Top Palazzo Set with Neck Scarf (Ivory Gold)",
+   "cat": "kurtas",
+   "price": 4999,
+   "mrp": 8999,
+   "sizes": [
+    "M",
+    "L",
+    "XL",
+    "XXL"
+   ],
+   "tags": [
+    "New"
+   ],
+   "variants": [
+    {
+     "label": "Ivory Gold",
+     "sw": "#e6d7b8",
+     "imgs": [
+      "p15_mvjuscv9qfln",
+      "p15_mvjush6u5ar9",
+      "p15_mvjuskqwm6y8"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Set contents",
+     "Peplum Top, Palazzo, Neck Scarf"
+    ],
+    [
+     "Colour",
+     "Ivory Gold"
+    ],
+    [
+     "Fabric",
+     "Silk"
+    ],
+    [
+     "Work",
+     "3D Floral & Zari Embroidery"
+    ],
+    [
+     "Sizes",
+     "M, L, XL, XXL"
+    ],
+    [
+     "Occasion",
+     "Wedding, Festive"
+    ],
+    [
+     "Care",
+     "Dry Clean Only"
+    ]
+   ],
+   "desc": "Timeless grace with a royal touch.\n\nTurn heads at every celebration in this elegant ivory gold peplum set, where classic craftsmanship meets a modern silhouette. The sweetheart neckline, rich 3D floral embroidery and flowing palazzo create a look that is regal, feminine and effortlessly chic.\n\nPerfect for weddings, engagements, receptions and festive nights, this outfit is made for women who love to shine with understated luxury.\n\nWhy you’ll love it\n• Heavy 3D floral embroidery with zari and sequin detailing\n• Flattering peplum top with sweetheart neckline and thin straps\n• Scalloped hem with delicate bead tassels\n• Wide flared palazzo for a graceful, flowy look\n• Embroidered neck scarf that adds a unique statement touch\n\nWhat’s in the set\nPeplum Top + Palazzo + Neck Scarf\n\nSizes: M, L, XL, XXL\nCare: Dry clean only\n\nStyle tip: Pair it with gold jhumkas and nude heels for an elegant festive look.\n\nOrder now on WhatsApp and get styling help from our team!"
+  },
+  {
    "id": 14,
    "name": "Embroidered Organza Crop Top Palazzo Set with Cape (Taupe Beige)",
    "cat": "kurtas",
