@@ -68,6 +68,26 @@ const SHELL_FILLED = SHELL
   .replace(/<!--FOOT:([\w,]+)-->\n/g, (m, gs) => catsIn(gs.split(',')).map(([k, c]) => `      <li><button data-shop="${k}">${esc(c.name)}</button></li>\n`).join(''));
 const FONTS = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&family=Poppins:wght@600;700&display=swap';
 
+/* Shipping & returns shown to Google (keep in line with src/app.js: FREE_SHIP_ABOVE, SHIP_FEE) */
+const FREE_SHIP_ABOVE = 999, SHIP_FEE = 79;
+const HANDLING_DAYS = [1, 2], TRANSIT_DAYS = [3, 7], RETURN_DAYS = 7;
+const shippingDetails = price => ({
+  '@type': 'OfferShippingDetails',
+  shippingRate: { '@type': 'MonetaryAmount', value: price >= FREE_SHIP_ABOVE ? 0 : SHIP_FEE, currency: 'INR' },
+  shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'IN' },
+  deliveryTime: { '@type': 'ShippingDeliveryTime',
+    handlingTime: { '@type': 'QuantitativeValue', minValue: HANDLING_DAYS[0], maxValue: HANDLING_DAYS[1], unitCode: 'DAY' },
+    transitTime: { '@type': 'QuantitativeValue', minValue: TRANSIT_DAYS[0], maxValue: TRANSIT_DAYS[1], unitCode: 'DAY' } }
+});
+const RETURN_POLICY = {
+  '@type': 'MerchantReturnPolicy',
+  applicableCountry: 'IN',
+  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+  merchantReturnDays: RETURN_DAYS,
+  returnMethod: 'https://schema.org/ReturnByMail',
+  returnFees: 'https://schema.org/FreeReturn'
+};
+
 function jsonLd(pg) {
   const out = [];
   if (pg.crumbs && pg.crumbs.length > 1)
@@ -77,7 +97,9 @@ function jsonLd(pg) {
     const p = pg.product;
     const prod = { '@context': 'https://schema.org', '@type': 'Product', name: p.name, description: p.desc || p.name,
       image: p.variants.flatMap(v => v.imgs).slice(0, 6).map(k => `${SITE_URL}/img/${k}.webp`), brand: { '@type': 'Brand', name: BRAND } };
-    if (p.price) prod.offers = { '@type': 'Offer', priceCurrency: 'INR', price: String(p.price), availability: 'https://schema.org/InStock', url: `${SITE_URL}/${pg.path}` };
+    prod.sku = 'SM-' + p.id;
+    if (p.price) prod.offers = { '@type': 'Offer', priceCurrency: 'INR', price: String(p.price), availability: 'https://schema.org/InStock', url: `${SITE_URL}/${pg.path}`,
+      shippingDetails: shippingDetails(p.price), hasMerchantReturnPolicy: RETURN_POLICY };
     out.push(prod);
   }
   if (pg.page === 'home') out.push({ '@context': 'https://schema.org', '@type': 'Organization', name: 'ShopsMantra', legalName: 'Shopsmantra LLP', url: SITE_URL + '/', logo: `${SITE_URL}/img/logo.svg`, sameAs: ['https://www.instagram.com/shops.mantra/'] });
@@ -138,7 +160,7 @@ async function main() {
 
   // Prerender every page in Chromium
   const { chromium } = require('playwright');
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(process.env.CHROME_CHANNEL ? { channel: process.env.CHROME_CHANNEL } : {});
   const ctx = await browser.newContext();
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.abort());
   const errors = [];
