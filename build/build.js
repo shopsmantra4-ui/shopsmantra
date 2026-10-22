@@ -24,7 +24,7 @@ appJs = appJs.replace(marker, () => '/*__CATALOG__*/' + JSON.stringify(catalog).
 
 // Use the store's own code to work out slugs, so URLs always match the site.
 const head = appJs.slice(0, appJs.indexOf('/* ===== end of catalogue ===== */'));
-const D = new Function(head + '; return {CATS, P, GROUP_SLUG, INFO_SLUG, collSlug};')();
+const D = new Function(head + '; return {CATS, P, GROUP_SLUG, INFO_SLUG, collSlug, revsFor, revStats};')();
 
 const GROUP_TITLES = { all: 'All Products', clothing: "Women's Clothing", jewellery: 'Jewellery', accessories: 'Accessories', new: 'New Arrivals', under500: 'Under ₹500' };
 const GROUP_OF = k => D.CATS[k] ? D.CATS[k].group : null;
@@ -100,6 +100,14 @@ function jsonLd(pg) {
     prod.sku = 'SM-' + p.id;
     if (p.price) prod.offers = { '@type': 'Offer', priceCurrency: 'INR', price: String(p.price), availability: 'https://schema.org/InStock', url: `${SITE_URL}/${pg.path}`,
       shippingDetails: shippingDetails(p.price), hasMerchantReturnPolicy: RETURN_POLICY };
+    // ratings: only from real reviews, and exactly the numbers shown on the page
+    const rv = D.revsFor(p.id), st = D.revStats(rv);
+    if (st) {
+      prod.aggregateRating = { '@type': 'AggregateRating', ratingValue: st.avg, reviewCount: st.count, bestRating: 5, worstRating: 1 };
+      prod.review = rv.map(r => Object.assign({ '@type': 'Review', author: { '@type': 'Person', name: r.name },
+        reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5, worstRating: 1 }, reviewBody: r.text },
+        r.date ? { datePublished: r.date } : {}));
+    }
     out.push(prod);
   }
   if (pg.page === 'home') out.push({ '@context': 'https://schema.org', '@type': 'Organization', name: 'ShopsMantra', legalName: 'Shopsmantra LLP', url: SITE_URL + '/', logo: `${SITE_URL}/img/logo.svg`, sameAs: ['https://www.instagram.com/shops.mantra/'] });
