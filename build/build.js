@@ -88,6 +88,73 @@ const RETURN_POLICY = {
   returnFees: 'https://schema.org/FreeReturn'
 };
 
+/* ===== Google Merchant Center feed (products.xml), rebuilt on every save ===== */
+const GOOGLE_CAT = {
+  earrings: 'Apparel & Accessories > Jewelry > Earrings',
+  necklaces: 'Apparel & Accessories > Jewelry > Necklaces',
+  bangles: 'Apparel & Accessories > Jewelry > Bracelets',
+  anklets: 'Apparel & Accessories > Jewelry > Anklets',
+  hair: 'Apparel & Accessories > Clothing Accessories > Hair Accessories',
+  boxes: 'Apparel & Accessories > Jewelry'
+};
+const GROUP_GOOGLE_CAT = { clothing: 'Apparel & Accessories > Clothing', jewellery: 'Apparel & Accessories > Jewelry', accessories: 'Apparel & Accessories' };
+const xml = s => String(s == null ? '' : s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '')
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+const idPart = s => String(s).toLowerCase().replace(/&/g, ' ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'x';
+const money = n => Number(n).toFixed(2) + ' INR';
+function merchantFeed() {
+  const items = [];
+  for (const p of D.P) {
+    if (!p.price) continue;                       // "Ask price" products can't be listed
+    const url = `${SITE_URL}/products/${p.slug}/`;
+    const onSale = p.mrp && p.mrp > p.price;
+    const cat = GOOGLE_CAT[p.cat] || GROUP_GOOGLE_CAT[GROUP_OF(p.cat)] || 'Apparel & Accessories';
+    const sizes = (p.sizes && p.sizes.length ? p.sizes : ['Free']);
+    const variants = p.variants.filter(v => v.imgs && v.imgs.length);
+    const multi = variants.length > 1 || sizes.length > 1;
+    const hasColour = variants.length > 1 || !!(variants[0] && variants[0].label);
+    for (const v of variants) for (const size of sizes) {
+      const id = multi ? ['SM', p.id, variants.length > 1 ? idPart(v.label) : null, sizes.length > 1 ? idPart(size) : null].filter(Boolean).join('-') : 'SM-' + p.id;
+      const imgs = v.imgs.map(k => `${SITE_URL}/img/${k}.webp`);
+      const f = [
+        ['g:id', id],
+        ['g:title', p.name],
+        ['g:description', p.desc || p.name],
+        ['g:link', url],
+        ['g:image_link', imgs[0]],
+        ...imgs.slice(1, 11).map(u => ['g:additional_image_link', u]),
+        ['g:availability', 'in_stock'],
+        ['g:price', money(onSale ? p.mrp : p.price)],
+        ...(onSale ? [['g:sale_price', money(p.price)]] : []),
+        ['g:brand', 'Shopsmantra'],
+        ['g:condition', 'new'],
+        ['g:identifier_exists', 'no'],
+        ['g:google_product_category', cat],
+        ['g:product_type', `${GROUP_TITLES[GROUP_OF(p.cat)] || 'Products'} > ${D.CATS[p.cat].name}`],
+        ['g:gender', 'female'],
+        ['g:age_group', 'adult'],
+        ...(hasColour && v.label ? [['g:color', v.label.replace(/\s*,\s*/g, '/')]] : []),
+        ['g:size', size === 'Free' ? 'One Size' : size],
+        ...(multi ? [['g:item_group_id', 'SM-' + p.id]] : []),
+        ['g:shipping', null]
+      ];
+      items.push('    <item>\n' + f.map(([k, val]) => k === 'g:shipping'
+        ? `      <g:shipping><g:country>IN</g:country><g:price>${money(p.price >= FREE_SHIP_ABOVE ? 0 : SHIP_FEE)}</g:price></g:shipping>`
+        : `      <${k}>${xml(val)}</${k}>`).join('\n') + '\n    </item>');
+    }
+  }
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+  <channel>
+    <title>ShopsMantra</title>
+    <link>${SITE_URL}/</link>
+    <description>Women's clothing and jewellery from Shopsmantra LLP</description>
+${items.join('\n')}
+  </channel>
+</rss>
+`;
+}
+
 function jsonLd(pg) {
   const out = [];
   if (pg.crumbs && pg.crumbs.length > 1)
@@ -212,6 +279,7 @@ async function main() {
 ${pages.filter(p => !p.noindex).map(p => `  <url><loc>${SITE_URL}/${p.path}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
 </urlset>
 `);
+  fs.writeFileSync(path.join(OUT, 'products.xml'), merchantFeed());
   fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nDisallow: /admin/\nDisallow: /checkout/\nDisallow: /wishlist/\nDisallow: /search/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
   fs.writeFileSync(path.join(OUT, 'CNAME'), 'www.shopsmantra.com\n');
   fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
