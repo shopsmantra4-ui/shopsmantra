@@ -159,7 +159,7 @@ const RAW=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/`;
 const GROUPS={clothing:'Clothing',jewellery:'Jewellery',accessories:'Accessories'};
 
 /* ===== state ===== */
-let TOKEN=null, cat=null, catSha=null, original='', tab='products', q='';
+let TOKEN=null, cat=null, catSha=null, original='', tab='products', q='', revPid='';
 const newImages={};            // key -> {full:Blob, small:Blob, url:objectURL}
 const $=s=>document.querySelector(s);
 const app=$('#app');
@@ -368,11 +368,12 @@ function productsPane(){
   ${list.length?`<div class="list">${list.map(p=>{const k=p.variants&&p.variants[0]&&p.variants[0].imgs[0];const st=statusOf(p);return `<div class="item">
     ${k?`<img src="${imgSrc(k)}" alt="" loading="lazy">`:`<div class="noimg"></div>`}
     <div style="min-width:0"><div class="nm">${esc(p.name)}</div><div class="meta"><span>${esc(catName(p.cat))}</span><span>${p.price?inr(p.price)+(p.mrp>p.price?` <s>${inr(p.mrp)}</s>`:''):'<span class="pill ask">Ask price</span>'}</span>${(p.tags||[]).filter(t=>t==='New'||t==='Bestseller').map(t=>`<span class="pill">${t}</span>`).join('')}${st==='new'?'<span class="pill new">Not saved yet</span>':st==='chg'?'<span class="pill chg">Edited</span>':''}</div></div>
-    <div class="acts"><button class="btn sm" data-edit="${p.id}">Edit</button><button class="btn sm danger" data-del="${p.id}">Delete</button></div></div>`}).join('')}</div>`
+    <div class="acts"><button class="btn sm" data-revs="${p.id}">★ Reviews (${revsOf(p.id).length})</button><button class="btn sm" data-edit="${p.id}">Edit</button><button class="btn sm danger" data-del="${p.id}">Delete</button></div></div>`}).join('')}</div>`
   :`<div class="empty">${q?'No products match your search.':'No products yet. Add your first product.'}</div>`}`;
   $('#q').oninput=e=>{q=e.target.value;const pos=e.target.selectionStart;productsPane();const i=$('#q');i.focus();i.setSelectionRange(pos,pos)};
   $('#addP').onclick=()=>openEditor(null);
   $('#pane').querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openEditor(+b.dataset.edit));
+  $('#pane').querySelectorAll('[data-revs]').forEach(b=>b.onclick=()=>{tab='reviews';revPid=b.dataset.revs;render()});
   $('#pane').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>confirmBox(`Delete “${cat.products.find(p=>p.id===+b.dataset.del).name}”?`,'It will be removed from the website when you save.','Delete',()=>{cat.products=cat.products.filter(p=>p.id!==+b.dataset.del);render()}));
 }
 
@@ -467,27 +468,47 @@ function variantHtml(v,vi){
 }
 
 /* ===== reviews ===== */
+const pidOf=r=>{if(r.pid)return +r.pid;const m=r.product&&cat.products.find(p=>p.name===r.product);return m?m.id:0};
+const revsOf=id=>cat.reviews.filter(r=>pidOf(r)===+id);
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const fmtDate=d=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(d||'');return m?`${+m[3]} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m[2]-1]} ${m[1]}`:''};
 function reviewsPane(){
-  $('#pane').innerHTML=`<div class="bar"><span class="muted small" style="flex:1">Add only real reviews from your customers, with their permission.</span><button class="btn pri" id="addR">+ Add review</button></div>
-  ${cat.reviews.length?`<div class="list">${cat.reviews.map((r,i)=>`<div class="item" style="grid-template-columns:1fr auto"><div style="min-width:0"><div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><div style="margin:4px 0">${esc(r.text)}</div><div class="meta"><span>${esc(r.name)}${r.city?', '+esc(r.city):''}</span>${r.product?`<span>${esc(r.product)}</span>`:''}</div></div><div class="acts"><button class="btn sm" data-re="${i}">Edit</button><button class="btn sm danger" data-rd="${i}">Delete</button></div></div>`).join('')}</div>`
+  if(revPid&&!cat.products.some(p=>p.id===+revPid))revPid='';
+  const list=cat.reviews.map((r,i)=>({r,i})).filter(({r})=>!revPid||(revPid==='none'?!pidOf(r):pidOf(r)===+revPid));
+  const st=list.length?(list.reduce((t,{r})=>t+(+r.rating),0)/list.length).toFixed(1):null;
+  const pname=r=>{const p=cat.products.find(x=>x.id===pidOf(r));return p?p.name:''};
+  $('#pane').innerHTML=`<div class="bar"><select class="inp" id="revF" aria-label="Show reviews for" style="flex:1;min-width:0"><option value="">All products (${cat.reviews.length})</option>${cat.products.map(p=>`<option value="${p.id}" ${revPid==p.id?'selected':''}>${esc(p.name)} (${revsOf(p.id).length})</option>`).join('')}<option value="none" ${revPid==='none'?'selected':''}>Not linked to a product (${cat.reviews.filter(r=>!pidOf(r)).length})</option></select><button class="btn pri" id="addR">+ Add review</button></div>
+  <p class="muted small" style="margin:4px 0 12px">Add only real reviews from customers who bought from you, with their permission. Reviews linked to a product appear on that product's page and in Google.</p>
+  ${st&&revPid&&revPid!=='none'?`<div class="status" style="margin-bottom:12px"><span class="stars">★</span> ${st} · ${list.length} review${list.length>1?'s':''} on this product</div>`:''}
+  ${list.length?`<div class="list">${list.map(({r,i})=>`<div class="item" style="grid-template-columns:1fr auto"><div style="min-width:0"><div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><div style="margin:4px 0">${esc(r.text)}</div><div class="meta"><span>${esc(r.name)}${r.city?', '+esc(r.city):''}</span>${r.date?`<span>${fmtDate(r.date)}</span>`:'<span class="pill chg">No date</span>'}${pname(r)?`<span>${esc(pname(r))}</span>`:'<span class="pill ask">No product</span>'}</div></div><div class="acts"><button class="btn sm" data-re="${i}">Edit</button><button class="btn sm danger" data-rd="${i}">Delete</button></div></div>`).join('')}</div>`
   :`<div class="empty">No reviews yet. When a customer sends you a review on WhatsApp, add it here.</div>`}`;
+  $('#revF').onchange=e=>{revPid=e.target.value;reviewsPane()};
   $('#addR').onclick=()=>reviewForm(-1);
   $('#pane').querySelectorAll('[data-re]').forEach(b=>b.onclick=()=>reviewForm(+b.dataset.re));
   $('#pane').querySelectorAll('[data-rd]').forEach(b=>b.onclick=()=>confirmBox('Delete this review?','It will be removed from the website when you save.','Delete',()=>{cat.reviews.splice(+b.dataset.rd,1);render()}));
 }
-function reviewForm(i,err){
-  const r=i>=0?cat.reviews[i]:{name:'',city:'',rating:5,product:'',text:''};
+function reviewForm(i,err,draft){
+  const r=draft||(i>=0?{...cat.reviews[i],pid:pidOf(cat.reviews[i])}:{name:'',city:'',rating:5,pid:revPid&&revPid!=='none'?+revPid:0,date:today(),text:''});
   document.body.style.overflow='hidden';
   $('#sheetRoot').innerHTML=`<div class="scrim" id="scrim"></div><aside class="sheet" role="dialog" aria-modal="true" aria-labelledby="rT"><header><h2 id="rT">${i>=0?'Edit review':'Add review'}</h2><button class="btn ghost sm" id="rX" aria-label="Close">✕</button></header>
-  <div class="body"><div class="row"><div class="fld"><label class="f" for="r_name">Customer name</label><input class="inp" id="r_name" value="${esc(r.name)}" placeholder="Priya"></div><div class="fld"><label class="f" for="r_city">City</label><input class="inp" id="r_city" value="${esc(r.city)}" placeholder="Ahmedabad"></div></div>
-  <div class="row"><div class="fld"><label class="f" for="r_rating">Rating</label><select class="inp" id="r_rating">${[5,4,3,2,1].map(n=>`<option value="${n}" ${r.rating===n?'selected':''}>${'★'.repeat(n)} (${n})</option>`).join('')}</select></div>
-  <div class="fld"><label class="f" for="r_prod">Product</label><select class="inp" id="r_prod"><option value="">Not specific</option>${cat.products.map(p=>`<option ${r.product===p.name?'selected':''}>${esc(p.name)}</option>`).join('')}</select></div></div>
-  <div class="fld"><label class="f" for="r_text">Review</label><textarea class="inp" id="r_text" placeholder="What the customer said">${esc(r.text)}</textarea></div>
+  <div class="body">
+  <div class="fld"><label class="f" for="r_prod">Product</label><select class="inp" id="r_prod"><option value="0">Not linked to a product (shows on home page only)</option>${cat.products.map(p=>`<option value="${p.id}" ${+r.pid===p.id?'selected':''}>${esc(p.name)}</option>`).join('')}</select></div>
+  <div class="row"><div class="fld"><label class="f" for="r_name">Customer name</label><input class="inp" id="r_name" maxlength="60" value="${esc(r.name||'')}" placeholder="Priya S."></div><div class="fld"><label class="f" for="r_city">City (optional)</label><input class="inp" id="r_city" maxlength="40" value="${esc(r.city||'')}" placeholder="Ahmedabad"></div></div>
+  <div class="row"><div class="fld"><label class="f" for="r_rating">Star rating</label><select class="inp" id="r_rating">${[5,4,3,2,1].map(n=>`<option value="${n}" ${+r.rating===n?'selected':''}>${'★'.repeat(n)}${'☆'.repeat(5-n)} (${n})</option>`).join('')}</select></div>
+  <div class="fld"><label class="f" for="r_date">Review date</label><input class="inp" id="r_date" type="date" max="${today()}" value="${esc(r.date||'')}"></div></div>
+  <div class="fld"><label class="f" for="r_text">Review</label><textarea class="inp" id="r_text" maxlength="1000" placeholder="What the customer said, in their words">${esc(r.text||'')}</textarea></div>
   ${err?`<div class="status bad"><span class="dot"></span>${esc(err)}</div>`:''}</div>
   <footer><button class="btn" id="rC">Cancel</button><button class="btn pri" id="rOk">${i>=0?'Update review':'Add review'}</button></footer></aside>`;
   $('#rX').onclick=$('#rC').onclick=$('#scrim').onclick=closeEditor;
-  $('#rOk').onclick=()=>{const n={name:$('#r_name').value.trim(),city:$('#r_city').value.trim(),rating:+$('#r_rating').value,product:$('#r_prod').value,text:$('#r_text').value.trim()};
-    if(!n.name||!n.text)return reviewForm(i,'Please enter the customer name and the review.');
+  $('#rOk').onclick=()=>{
+    const pid=+$('#r_prod').value, prod=cat.products.find(p=>p.id===pid);
+    const n={name:$('#r_name').value.trim().replace(/\s+/g,' '),city:$('#r_city').value.trim(),rating:+$('#r_rating').value,pid:pid||undefined,product:prod?prod.name:'',date:$('#r_date').value,text:$('#r_text').value.trim()};
+    if(!n.name)return reviewForm(i,'Please enter the customer name.',n);
+    if(!n.text||n.text.length<3)return reviewForm(i,'Please enter the review text.',n);
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(n.date))return reviewForm(i,'Please choose the review date.',n);
+    if(n.date>today())return reviewForm(i,'The review date cannot be in the future.',n);
+    if(!(n.rating>=1&&n.rating<=5))return reviewForm(i,'Please choose a star rating.',n);
+    if(!n.pid)delete n.pid;
     if(i>=0)cat.reviews[i]=n;else cat.reviews.unshift(n);closeEditor();render()};
 }
 
