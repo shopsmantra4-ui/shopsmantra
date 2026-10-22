@@ -405,8 +405,31 @@ function checkout(){
     const no='SM'+Date.now().toString().slice(-7);
     const v=id=>$(id).value.trim();
     const t2=totals();
-    const lines=t2.items.map((l,i)=>`${i+1}. ${l.p.name}\n   ${lineMeta(l)} | Qty: ${l.qty} | ${inr(l.p.price*l.qty)}`).join('\n');
-    const msg=`*New Order ${no}*\n\n${lines}\n\nSubtotal: ${inr(t2.sub)}\nShipping: ${t2.ship?inr(t2.ship):'Free'}\n*Total: ${inr(t2.total)}*\n\n*Deliver to:*\n${v('#c_name')}\n${v('#c_house')}\n${v('#c_area')}${v('#c_land')?`\nLandmark: ${v('#c_land')}`:''}\n${v('#c_city')}, ${v('#c_state')} - ${v('#c_pin')}\n\n*Contact:*\nMobile: +91 ${v('#c_phone')}${v('#c_alt')?`\nAlternate: +91 ${v('#c_alt')}`:''}${v('#c_email')?`\nEmail: ${v('#c_email')}`:''}`;
+    const LINE='━━━━━━━━━━━━━━━━';
+    const when=new Date().toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit',hour12:true});
+    const pUrl=p=>'https://www.shopsmantra.com/products/'+p.slug+'/';
+    const lines=t2.items.map((l,i)=>{const col=l.p.variants.length>1||l.p.variants[0].label?l.p.variants[l.v||0].label:'';
+      return `*${i+1}. ${l.p.name}*\n`+(col?`   🎨 Colour: ${col}\n`:'')+`   📏 Size: ${l.size==='Free'?'Free size':l.size}\n   🔢 Qty: ${l.qty} × ${inr(l.p.price)} = *${inr(l.p.price*l.qty)}*\n   🔗 ${pUrl(l.p)}`}).join('\n\n');
+    const saving=t2.mrp-t2.sub;
+    const msg=[
+      `🛍️ *NEW ORDER · SHOPSMANTRA*`,LINE,
+      `🧾 Order ID: *${no}*`,`📅 ${when}`,'',
+      `👗 *ORDER ITEMS* (${t2.items.reduce((n,l)=>n+l.qty,0)})`,'',lines,'',LINE,
+      `💰 *PRICE DETAILS*`,
+      ...(saving>0?[`Total MRP: ~${inr(t2.mrp)}~`,`Discount: −${inr(saving)} 🎉`]:[]),
+      `Subtotal: ${inr(t2.sub)}`,
+      `Shipping: ${t2.ship?inr(t2.ship):'FREE 🚚'}`,
+      `*Total to pay: ${inr(t2.total)}*`,
+      ...(saving>0?[`_You save ${inr(saving)} on this order_ ✨`]:[]),
+      LINE,`📦 *DELIVERY ADDRESS*`,
+      `👤 ${v('#c_name')}`,`🏠 ${v('#c_house')}`,`📍 ${v('#c_area')}`,
+      ...(v('#c_land')?[`🗺️ Landmark: ${v('#c_land')}`]:[]),
+      `🏙️ ${v('#c_city')}, ${v('#c_state')} – ${v('#c_pin')}`,'',
+      `📞 *CONTACT*`,`📱 +91 ${v('#c_phone')}`,
+      ...(v('#c_alt')?[`📱 Alt: +91 ${v('#c_alt')}`]:[]),
+      ...(v('#c_email')?[`✉️ ${v('#c_email')}`]:[]),
+      LINE,`✅ Please confirm my order and share the payment details.`,`🙏 Thank you, ShopsMantra!`
+    ].join('\n');
     const name=v('#c_name').split(' ')[0].replace(/[<>&"]/g,'');
     const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
     cart=[];save();
