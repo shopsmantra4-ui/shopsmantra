@@ -58,6 +58,71 @@
  ],
  "products": [
   {
+   "id": 17,
+   "name": "Embroidered Viscose Crush Top Palazzo Set with Dupatta (Mauve)",
+   "cat": "kurtas",
+   "price": 5499,
+   "mrp": 9999,
+   "sizes": [
+    "L",
+    "XL",
+    "XXL"
+   ],
+   "tags": [
+    "New"
+   ],
+   "variants": [
+    {
+     "label": "Mauve",
+     "sw": "#b0848a",
+     "imgs": [
+      "p17_mvjvyvwmn7dd",
+      "p17_mvjvz20l9nzs",
+      "p17_mvjvz6zgkdvp"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Set contents",
+     "Top, Palazzo, Dupatta"
+    ],
+    [
+     "Colour",
+     "Mauve"
+    ],
+    [
+     "Top fabric",
+     "Pure Viscose Crush"
+    ],
+    [
+     "Bottom fabric",
+     "Pure Viscose Crush"
+    ],
+    [
+     "Dupatta fabric",
+     "Organza"
+    ],
+    [
+     "Work",
+     "Heavy Zardosi Embroidery"
+    ],
+    [
+     "Sizes",
+     "L, XL, XXL"
+    ],
+    [
+     "Occasion",
+     "Wedding, Festive, Party"
+    ],
+    [
+     "Care",
+     "Dry Clean Only"
+    ]
+   ],
+   "desc": "Soft, graceful and beautifully crafted.\n\nFall in love with this dreamy mauve set in pure viscose crush fabric. Heavy gold zardosi floral embroidery, a sleek V-neck top and a flowing crushed palazzo create a look that is elegant and effortless. The sheer organza dupatta adds the perfect finishing touch.\n\nWhy you’ll love it\n• Heavy gold floral zardosi embroidery on neckline and hem\n• Sleeveless V-neck top with front slit\n• Scalloped hem with delicate bead tassels\n• Flowy crushed palazzo with natural crinkle texture\n• Sheer organza dupatta\n\nStyle tip: Pair it with pearl drop earrings and nude heels.\n\nOrder now"
+  },
+  {
    "id": 16,
    "name": "Embroidered Peplum Top Palazzo Set with Neck Scarf (Sage Green)",
    "cat": "kurtas",
