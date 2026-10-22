@@ -495,3 +495,16 @@ footer .brand .logo{height:36px}
 .fld.bad input:focus,.fld.bad select:focus{outline:2px solid color-mix(in srgb,var(--rose) 30%,transparent)}
 .remember{display:flex;gap:8px;align-items:center;font-size:13px;margin-top:16px;color:var(--muted);cursor:pointer}
 .remember input{accent-color:var(--plum);width:16px;height:16px}
+
+/* product page reviews */
+.pRevs .secHead{margin-bottom:18px}
+.pRevSum{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:24px;font-size:15px;color:var(--muted)}
+.pRevSum b{font-family:var(--f-display);font-size:30px;font-weight:500;color:var(--ink)}
+.pRevList{max-width:820px;margin:0 auto;display:flex;flex-direction:column}
+.pRev{border-top:1px solid var(--line);padding:18px 2px;display:flex;flex-direction:column;gap:6px}
+.pRev:last-child{border-bottom:1px solid var(--line)}
+.pRev header{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px;font-size:14px}
+.pRev header b{font-weight:600}
+.pRev time{margin-left:auto;font-size:12px;color:var(--muted)}
+.pRev p{margin:0;font-size:15px;line-height:1.6}
+.pRevNone{text-align:center;color:var(--muted);margin:0}

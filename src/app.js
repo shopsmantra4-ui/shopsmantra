@@ -17,6 +17,11 @@ P.forEach(p=>p.slug=p.slug||slugify(p.name));{const seen={};P.forEach(p=>{if(see
 const GROUP_SLUG={all:'shop',clothing:'clothing',jewellery:'jewellery',accessories:'accessories',new:'new-arrivals',under500:'under-500'};
 const collSlug=k=>GROUP_SLUG[k]||slugify(CATS[k].name);
 const INFO_SLUG={order:'how-to-order',ship:'shipping-returns',size:'size-help'};
+/* reviews: only real customer reviews added from the admin panel */
+const REVIEWS_ALL=(CATALOG.reviews||[]).filter(r=>r&&String(r.text||'').trim()&&String(r.name||'').trim()&&+r.rating>=1&&+r.rating<=5)
+  .map(r=>{const o={...r,name:String(r.name).trim(),text:String(r.text).trim(),rating:Math.round(+r.rating)};if(!o.pid&&o.product){const m=P.find(x=>x.name===o.product);if(m)o.pid=m.id}return o});
+const revsFor=id=>REVIEWS_ALL.filter(r=>+r.pid===+id).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+const revStats=l=>l.length?{avg:(l.reduce((t,r)=>t+r.rating,0)/l.length).toFixed(1),count:l.length}:null;
 /* ===== end of catalogue ===== */
 const BASE=(document.body&&document.body.dataset.base)||'';
 const SUFFIX=(document.body&&document.body.dataset.suffix)||'';
@@ -37,7 +42,8 @@ const pimg=(p,v=0,i=0)=>srcS(p.variants[v].imgs[i]);
 const IG_URL='https://www.instagram.com/shops.mantra/';
 /* Customer reviews: add only real reviews from your customers, for example
  {name:'Priya', city:'Ahmedabad', rating:5, product:'Kutchi Embroidered Anklet', text:'Very pretty and good quality.'} */
-const REVIEWS=(CATALOG.reviews||[]).filter(r=>r&&r.text);
+const REVIEWS=REVIEWS_ALL;
+const revDate=d=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(d||'');return m?`${+m[3]} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m[2]-1]} ${m[1]}`:''};
 const stars=n=>'★★★★★'.slice(0,n)+'<i>'+'★★★★★'.slice(0,5-n)+'</i>';
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const waLink=t=>'https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(t);
@@ -145,7 +151,7 @@ function home(){
     <div class="secHead">${orn()}<span class="eyebrow">Customer Reviews</span><h2 class="display">What our customers say</h2></div>
     ${REVIEWS.length?`
     <div class="revSum"><b>${(REVIEWS.reduce((s,r)=>s+r.rating,0)/REVIEWS.length).toFixed(1)}</b><span class="stars" aria-hidden="true">${stars(Math.round(REVIEWS.reduce((s,r)=>s+r.rating,0)/REVIEWS.length))}</span><span>Based on ${REVIEWS.length} review${REVIEWS.length>1?'s':''}</span></div>
-    <div class="revGrid">${REVIEWS.map(r=>`<figure class="revCard"><span class="stars" aria-label="${r.rating} out of 5">${stars(r.rating)}</span><blockquote>${esc(r.text)}</blockquote><figcaption><b>${esc(r.name)}</b>${r.city?`, ${esc(r.city)}`:''}${r.product?`<small>${esc(r.product)}</small>`:''}</figcaption></figure>`).join('')}</div>`
+    <div class="revGrid">${REVIEWS.map(r=>`<figure class="revCard"><span class="stars" aria-label="${r.rating} out of 5">${stars(r.rating)}</span><blockquote>${esc(r.text)}</blockquote><figcaption><b>${esc(r.name)}</b>${r.city?`, ${esc(r.city)}`:''}${(()=>{const pn=(r.pid&&(P.find(x=>x.id===+r.pid)||{}).name)||r.product;return pn?`<small>${esc(pn)}</small>`:''})()}</figcaption></figure>`).join('')}</div>`
     :`<div class="revEmpty"><span class="stars big" aria-hidden="true">${stars(5)}</span><p>Bought from ShopsMantra? We would love to hear how you liked it. Send us your review and a photo on WhatsApp and we'll feature it here.</p></div>`}
     <div style="text-align:center;margin-top:30px"><a class="btn out" href="${waLink('Hi ShopsMantra, here is my review:\n\nProduct: \nRating (out of 5): \nReview: \nName & city: ')}" target="_blank" rel="noopener">Write a review on WhatsApp</a></div>
   </div></section>
@@ -212,6 +218,13 @@ function renderShop(){
 }
 
 let pdp={};
+function prodReviews(p){
+  const l=revsFor(p.id),st=revStats(l);
+  return `<section class="block pRevs" id="reviews" style="padding-top:10px"><div class="secHead"><h2 class="display">Customer Reviews</h2></div>
+  ${st?`<div class="pRevSum"><b><span class="stars">★</span> ${st.avg}</b><span>· ${st.count} review${st.count>1?'s':''}</span></div>
+  <div class="pRevList">${l.map(r=>`<article class="pRev"><header><span><b>${esc(r.name)}</b>${r.city?`<span class="muted">, ${esc(r.city)}</span>`:''}</span>${r.date?`<time datetime="${esc(r.date)}">${revDate(r.date)}</time>`:''}</header><span class="stars" aria-label="${r.rating} out of 5 stars">${stars(r.rating)}</span><p>${esc(r.text)}</p></article>`).join('')}</div>`
+  :`<p class="pRevNone">No reviews yet</p>`}</section>`;
+}
 function product(id){
   const p=P.find(x=>x.id===+id); if(!p)return home();
   pdp={p,size:p.sizes.length===1?p.sizes[0]:null,v:0,qty:1,view:0};
@@ -248,6 +261,7 @@ function renderProduct(){
         </div>
       </div>
     </div>
+    ${prodReviews(p)}
     <section class="block" style="padding-top:10px"><div class="secHead"><h2 class="display">You may also like</h2></div><div class="grid">${similar.map(card).join('')}</div></section>
   </div>`,'');
   document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{pdp.view=+b.dataset.view;renderProduct()}));
