@@ -479,3 +479,19 @@ footer .brand .logo{height:36px}
 @media (min-width:1181px){.brand{flex:none}}
 @media (max-width:1320px) and (min-width:1181px){nav.main button,nav.main a:where(.lk){padding:8px 9px;letter-spacing:.13em}}
 .waBox{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:14px}
+
+/* checkout validation */
+.fld label i{color:var(--rose);font-style:normal}
+.fld label em{color:var(--muted);font-style:normal;font-weight:400}
+.fld .pre{display:flex;align-items:stretch}
+.fld .pre span{display:flex;align-items:center;padding:0 10px;border:1px solid var(--line);border-right:0;background:var(--soft);color:var(--muted);font-size:14px}
+.fld .pre input{flex:1;min-width:0}
+.fld .ferr{display:block;color:var(--rose);font-size:12px;font-weight:600;margin-top:5px}
+.fld .ferr:empty{display:none}
+.fld .fhint{display:block;color:var(--ok);font-size:12px;margin-top:5px}
+.fld .fhint:empty{display:none}
+.fld.bad input,.fld.bad select,.fld.bad .pre span{border-color:var(--rose)}
+.fld input:invalid:not(:placeholder-shown){border-color:var(--line)}
+.fld.bad input:focus,.fld.bad select:focus{outline:2px solid color-mix(in srgb,var(--rose) 30%,transparent)}
+.remember{display:flex;gap:8px;align-items:center;font-size:13px;margin-top:16px;color:var(--muted);cursor:pointer}
+.remember input{accent-color:var(--plum);width:16px;height:16px}

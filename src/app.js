@@ -76,6 +76,11 @@ function show(html,key){app.innerHTML=`<div class="view">${html}</div>`;linkify(
 
 const LOTUS='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1.8 2 2.6 4.3 2.4 6.8C13.6 11.4 12.8 12.6 12 13.5c-.8-.9-1.6-2.1-2.4-3.7C9.4 7.3 10.2 5 12 3zM4 8.5c2.5.2 4.6 1.3 6 3.2.6 1 1 2 1.2 3.1-2.6.2-4.6-.6-5.9-2.2C4.6 11.6 4.1 10.2 4 8.5zm16 0c-.1 1.7-.6 3.1-1.3 4.1-1.3 1.6-3.3 2.4-5.9 2.2.2-1.1.6-2.1 1.2-3.1 1.4-1.9 3.5-3 6-3.2zM5 16.5c2.2-.6 4.6-.4 7 1 2.4-1.4 4.8-1.6 7-1-1.5 2.4-4 3.6-7 3.6s-5.5-1.2-7-3.6z"/></svg>';
 const orn=()=>`<div class="orn">${LOTUS}</div>`;
+function heroArch(cls,id,key,fbId,fbKey,alt){
+  const p=P.find(x=>x.id===id);
+  const k=p&&p.variants.some(v=>v.imgs.includes(key))?key:(p?p.variants[0].imgs[0]:fbKey);
+  return `<div class="arch ${cls}" data-pid="${p?id:fbId}"><img src="${src(k)}" alt="${alt}"></div>`;
+}
 function home(){
   const cloth=P.filter(p=>p.group==='clothing');
   const jew=P.filter(p=>p.group!=='clothing');
@@ -91,8 +96,8 @@ function home(){
     </div>
     <div class="pheroArt">
       <span class="frame"></span>
-      <div class="arch main" data-pid="2"><img src="${src('lehB_0')}" alt="Printed lehenga choli"></div>
-      <div class="arch side" data-pid="6"><img src="${src('bangBlk_0')}" alt="Bangle set"></div>
+      ${heroArch('main',15,'p15_mvjuscv9qfln',2,'lehB_0','Embroidered peplum top palazzo set')}
+      ${heroArch('side',8,'ear12_2',6,'bangBlk_0','Oxidised silver earrings set')}
     </div>
   </div></section>
 
@@ -296,6 +301,62 @@ function openCart(){renderCart();linkify($('#drawer'));$('#drawer').classList.ad
 function closeCart(){$('#drawer').classList.remove('open');$('#scrim').classList.remove('open')}
 
 const WA_ICON='<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.4.3.2.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 .9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>';
+/* checkout form: cleaning, validation, pincode lookup, remember details */
+function coSetup(){
+  const F=['name','phone','alt','email','house','area','land','pin','city','state'];
+  const el=k=>$('#c_'+k), val=k=>{const e=el(k);return e?e.value.trim():''};
+  const digits=x=>x.replace(/\D/g,'');
+  const mobile=x=>{let d=digits(x);if(d.length>10&&d.startsWith('91'))d=d.slice(2);if(d.length===11&&d[0]==='0')d=d.slice(1);return d.slice(0,10)};
+  const badMobile=d=>!/^[6-9]\d{9}$/.test(d)?'Enter a valid 10-digit mobile number starting with 6, 7, 8 or 9.':/^(\d)\1{9}$/.test(d)?'This mobile number does not look real.':'';
+  let pinInfo=null; // {pin, ok, state, district}
+  const rules={
+    name:v=>!v?'Please enter your full name.':!/^[A-Za-zऀ-෿][A-Za-zऀ-෿ .']*$/.test(v)?'Name can only have letters and spaces.':v.replace(/[^A-Za-zऀ-෿]/g,'').length<3?'Name is too short.':v.split(/\s+/).length<2?'Please enter first and last name.':'',
+    phone:v=>!v?'Please enter your mobile number.':badMobile(v),
+    alt:v=>!v?'':badMobile(v)||(v===val('phone')?'Use a different number from your main mobile.':''),
+    email:v=>!v?'':/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(v)?'':'Enter a valid email address.',
+    house:v=>!v?'Please enter house / flat no. and building.':v.length<3?'Please add a few more details.':'',
+    area:v=>!v?'Please enter area, street or society.':v.length<4?'Please add a few more details.':!/[A-Za-zऀ-෿]{3}/.test(v)?'Please write the area name.':'',
+    land:v=>'',
+    pin:v=>!v?'Please enter your pincode.':!/^[1-9]\d{5}$/.test(v)?'Pincode must be 6 digits.':(pinInfo&&pinInfo.pin===v&&pinInfo.ok===false)?'This pincode was not found. Please check it.':'',
+    city:v=>!v?'Please enter your city.':!/^[A-Za-zऀ-෿][A-Za-zऀ-෿ .\-()]*$/.test(v)||v.length<2?'Enter a valid city name.':'',
+    state:v=>!v?'Please select your state.':(pinInfo&&pinInfo.ok&&pinInfo.pin===val('pin')&&pinInfo.state&&pinInfo.state!==v)?`This pincode is in ${pinInfo.state}.`:''
+  };
+  const check=(k,showErr=true)=>{if(!el(k))return true;const m=rules[k](val(k));const f=el(k).closest('.fld');if(showErr||!m){f.classList.toggle('bad',!!m);f.querySelector('.ferr').textContent=m}return!m};
+  // clean while typing
+  ['phone','alt'].forEach(k=>el(k).addEventListener('input',e=>{const d=mobile(e.target.value);if(d!==e.target.value)e.target.value=d}));
+  el('pin').addEventListener('input',e=>{const d=digits(e.target.value).slice(0,6);if(d!==e.target.value)e.target.value=d;if(d.length===6)lookup(d);else $('#pinHint').textContent=''});
+  el('name').addEventListener('blur',()=>{if(!el('name'))return;el('name').value=val('name').replace(/\s+/g,' ').replace(/(^|[\s'])([a-z])/g,(m,a,b)=>a+b.toUpperCase())});
+  F.forEach(k=>{const ev=el(k).tagName==='SELECT'?'change':'blur';el(k).addEventListener(ev,()=>{if(!el(k))return;if(val(k)||el(k).closest('.fld').classList.contains('bad'))check(k)});
+    el(k).addEventListener('input',()=>{if(el(k).closest('.fld').classList.contains('bad'))check(k)})});
+  // pincode → city & state (India Post data; if it can't be reached, the customer fills them in)
+  const ST_FIX={'Delhi':'Delhi','Jammu and Kashmir':'Jammu & Kashmir','Andaman and Nicobar Islands':'Andaman & Nicobar Islands','Dadra and Nagar Haveli and Daman and Diu':'Dadra & Nagar Haveli and Daman & Diu','Dadra and Nagar Haveli':'Dadra & Nagar Haveli and Daman & Diu','Daman and Diu':'Dadra & Nagar Haveli and Daman & Diu','Pondicherry':'Puducherry','Chattisgarh':'Chhattisgarh','Orissa':'Odisha'};
+  async function lookup(pin){
+    if(pinInfo&&pinInfo.pin===pin)return;
+    $('#pinHint').textContent='Checking pincode…';
+    try{
+      const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),6000);
+      const r=await fetch('https://api.postalpincode.in/pincode/'+pin,{signal:ctl.signal});clearTimeout(tm);
+      const j=(await r.json())[0];
+      if(!el('pin')||val('pin')!==pin)return;
+      if(j&&j.Status==='Success'&&j.PostOffice&&j.PostOffice.length){
+        const po=j.PostOffice[0];const st=ST_FIX[po.State]||po.State;
+        pinInfo={pin,ok:true,state:[...el('state').options].some(o=>o.value===st)?st:'',district:po.District};
+        if(!val('city'))el('city').value=po.District;
+        if(pinInfo.state)el('state').value=pinInfo.state;
+        $('#pinHint').textContent=`✓ ${po.District}, ${st}`;
+        ['pin','city','state'].forEach(k=>{if(val(k))check(k)});
+      }else if(j&&j.Status==='Error'){pinInfo={pin,ok:false};$('#pinHint').textContent='';check('pin')}
+      else{pinInfo=null;$('#pinHint').textContent=''}
+    }catch(e){if(el('pin')&&val('pin')===pin){pinInfo=null;$('#pinHint').textContent=''}}
+  }
+  // remember details on this device
+  const saved=store.get('addr',null);
+  if(saved&&typeof saved==='object'){F.forEach(k=>{if(typeof saved[k]==='string')el(k).value=saved[k]});if(/^\d{6}$/.test(val('pin')))$('#pinHint').textContent=''}
+  return{
+    validateAll(){let first=null;F.forEach(k=>{if(!check(k)&&!first)first=k});if(first){el(first).focus();el(first).scrollIntoView({block:'center',behavior:'smooth'})}return!first},
+    remember(){if($('#c_save').checked){const o={};F.forEach(k=>o[k]=val(k));store.set('addr',o)}else{try{localStorage.removeItem('sm2_addr')}catch(e){}}}
+  };
+}
 function checkout(){
   const t=totals();
   if(!t.items.length){return show(`<div class="wrap"><div class="crumbs"><button data-go="home">Home</button><span>/</span><span>Checkout</span></div><div class="empty soonEmpty" style="margin-bottom:60px">${orn()}<h2 class="display">Your bag is empty</h2><p>Add a product to your bag to place an order.</p><button class="btn pri" data-shop="all">Start shopping</button></div></div>`,'')}
@@ -304,17 +365,25 @@ function checkout(){
     <h1 class="display" style="font-size:34px;margin-bottom:20px">Checkout</h1>
     <div class="checkout">
       <form class="panel" id="coForm" novalidate>
-        <h2>Delivery address</h2>
+        <h2>Contact details</h2>
         <div class="fields">
-          <div class="fld"><label for="c_name">Full name</label><input id="c_name" required placeholder="Your name"></div>
-          <div class="fld"><label for="c_phone">Mobile number</label><input id="c_phone" required inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit mobile"></div>
-          <div class="fld full"><label for="c_addr">Address</label><input id="c_addr" required placeholder="House no., building, street, area"></div>
-          <div class="fld"><label for="c_pin">Pincode</label><input id="c_pin" required inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6" placeholder="6 digits"></div>
-          <div class="fld"><label for="c_city">City</label><input id="c_city" required placeholder="City"></div>
-          <div class="fld full"><label for="c_state">State</label><select id="c_state" required><option value="">Select state</option>${['Andhra Pradesh','Assam','Bihar','Chhattisgarh','Delhi','Goa','Gujarat','Haryana','Himachal Pradesh','Jammu & Kashmir','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Odisha','Punjab','Rajasthan','Tamil Nadu','Telangana','Uttar Pradesh','Uttarakhand','West Bengal','Other'].map(s=>`<option>${s}</option>`).join('')}</select></div>
+          <div class="fld full"><label for="c_name">Full name <i>*</i></label><input id="c_name" autocomplete="name" maxlength="60" placeholder="First and last name"><small class="ferr"></small></div>
+          <div class="fld"><label for="c_phone">Mobile number <i>*</i></label><div class="pre"><span>+91</span><input id="c_phone" type="tel" autocomplete="tel-national" inputmode="numeric" maxlength="16" placeholder="10-digit mobile"></div><small class="ferr"></small></div>
+          <div class="fld"><label for="c_alt">Alternate mobile <em>(optional)</em></label><div class="pre"><span>+91</span><input id="c_alt" type="tel" inputmode="numeric" maxlength="16" placeholder="Another number"></div><small class="ferr"></small></div>
+          <div class="fld full"><label for="c_email">Email <em>(optional)</em></label><input id="c_email" type="email" autocomplete="email" maxlength="80" placeholder="you@example.com"><small class="ferr"></small></div>
         </div>
+        <h2 style="margin-top:26px">Delivery address</h2>
+        <div class="fields">
+          <div class="fld full"><label for="c_house">House / Flat no., Building <i>*</i></label><input id="c_house" autocomplete="address-line1" maxlength="100" placeholder="e.g. B-12, Shanti Apartment"><small class="ferr"></small></div>
+          <div class="fld full"><label for="c_area">Area, Street, Society <i>*</i></label><input id="c_area" autocomplete="address-line2" maxlength="120" placeholder="e.g. Near bus stand, Station Road"><small class="ferr"></small></div>
+          <div class="fld full"><label for="c_land">Landmark <em>(optional)</em></label><input id="c_land" maxlength="80" placeholder="e.g. Opposite City Mall"><small class="ferr"></small></div>
+          <div class="fld"><label for="c_pin">Pincode <i>*</i></label><input id="c_pin" autocomplete="postal-code" inputmode="numeric" maxlength="10" placeholder="6 digits"><small class="ferr"></small><small class="fhint" id="pinHint"></small></div>
+          <div class="fld"><label for="c_city">City / District <i>*</i></label><input id="c_city" autocomplete="address-level2" maxlength="50" placeholder="City"><small class="ferr"></small></div>
+          <div class="fld full"><label for="c_state">State <i>*</i></label><select id="c_state" autocomplete="address-level1"><option value="">Select state</option>${['Andaman & Nicobar Islands','Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chandigarh','Chhattisgarh','Dadra & Nagar Haveli and Daman & Diu','Delhi','Goa','Gujarat','Haryana','Himachal Pradesh','Jammu & Kashmir','Jharkhand','Karnataka','Kerala','Ladakh','Lakshadweep','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Puducherry','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal'].map(s=>`<option>${s}</option>`).join('')}</select><small class="ferr"></small></div>
+        </div>
+        <label class="remember"><input type="checkbox" id="c_save" checked> Save my details on this device for next time</label>
         <div class="waBox" style="margin-top:22px">Your order opens in WhatsApp. We confirm availability, delivery time and payment details with you in the chat.</div>
-        <div class="err" id="coErr" style="margin-top:14px" hidden>Please fill in all fields correctly: mobile must be 10 digits and pincode 6 digits.</div>
+        <div class="err" id="coErr" style="margin-top:14px" hidden>Please correct the highlighted fields above.</div>
         <button class="btn pri block" type="submit" style="margin-top:18px;padding-block:15px">${WA_ICON}Place order on WhatsApp · ${inr(t.total)}</button>
         <p class="muted" style="font-size:12px;margin:10px 0 0;text-align:center">Your order details open in WhatsApp. Just tap Send and we'll confirm it there.</p>
       </form>
@@ -329,13 +398,15 @@ function checkout(){
         </div>
       </aside>
     </div></div>`,'');
+  const co=coSetup();
   $('#coForm').addEventListener('submit',e=>{e.preventDefault();
-    if(!e.target.checkValidity()){$('#coErr').hidden=false;return}
+    if(!co.validateAll()){$('#coErr').hidden=false;return}
+    $('#coErr').hidden=true;co.remember();
     const no='SM'+Date.now().toString().slice(-7);
     const v=id=>$(id).value.trim();
     const t2=totals();
     const lines=t2.items.map((l,i)=>`${i+1}. ${l.p.name}\n   ${lineMeta(l)} | Qty: ${l.qty} | ${inr(l.p.price*l.qty)}`).join('\n');
-    const msg=`*New Order ${no}*\n\n${lines}\n\nSubtotal: ${inr(t2.sub)}\nShipping: ${t2.ship?inr(t2.ship):'Free'}\n*Total: ${inr(t2.total)}*\n\n*Deliver to:*\n${v('#c_name')}\n${v('#c_addr')}\n${v('#c_city')}, ${v('#c_state')} - ${v('#c_pin')}\nMobile: ${v('#c_phone')}`;
+    const msg=`*New Order ${no}*\n\n${lines}\n\nSubtotal: ${inr(t2.sub)}\nShipping: ${t2.ship?inr(t2.ship):'Free'}\n*Total: ${inr(t2.total)}*\n\n*Deliver to:*\n${v('#c_name')}\n${v('#c_house')}\n${v('#c_area')}${v('#c_land')?`\nLandmark: ${v('#c_land')}`:''}\n${v('#c_city')}, ${v('#c_state')} - ${v('#c_pin')}\n\n*Contact:*\nMobile: +91 ${v('#c_phone')}${v('#c_alt')?`\nAlternate: +91 ${v('#c_alt')}`:''}${v('#c_email')?`\nEmail: ${v('#c_email')}`:''}`;
     const name=v('#c_name').split(' ')[0].replace(/[<>&"]/g,'');
     const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
     cart=[];save();
