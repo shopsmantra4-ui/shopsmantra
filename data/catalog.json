@@ -58,6 +58,64 @@
  ],
  "products": [
   {
+   "id": 16,
+   "name": "Embroidered Peplum Top Palazzo Set with Neck Scarf (Sage Green)",
+   "cat": "kurtas",
+   "price": 4999,
+   "mrp": 8999,
+   "sizes": [
+    "M",
+    "L",
+    "XL",
+    "XXL"
+   ],
+   "tags": [
+    "New"
+   ],
+   "variants": [
+    {
+     "label": "Sage Green",
+     "sw": "#8faf8a",
+     "imgs": [
+      "p16_mvjvf1gj86np",
+      "p16_mvjvf5yl3cs4",
+      "p16_mvjvf90f0ffc"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Set contents",
+     "Peplum Top, Palazzo, Neck Scarf"
+    ],
+    [
+     "Colour",
+     "Sage Green"
+    ],
+    [
+     "Fabric",
+     "Silk"
+    ],
+    [
+     "Work",
+     "Zari, Sequin & Stone Embroidery"
+    ],
+    [
+     "Sizes",
+     "M, L, XL, XXL"
+    ],
+    [
+     "Occasion",
+     "Mehndi, Engagement, Festive"
+    ],
+    [
+     "Care",
+     "Dry Clean Only"
+    ]
+   ],
+   "desc": "Fresh, elegant and festive-ready.\n\nBring a breath of freshness to every celebration in this sage green peplum set. Gold zari embroidery with teal stone floral motifs, a flattering sweetheart neckline and a flowing palazzo make it a perfect pick for mehndi, engagement and festive evenings.\n\nWhy you’ll love it\n• Gold zari and sequin work with teal stone floral motifs\n• Peplum top with sweetheart neckline and thin straps\n• Scalloped hem with delicate bead tassels\n• Wide flared palazzo for a graceful look\n• Embroidered neck scarf for a statement touch\n\nStyle tip: Pair it with emerald drop earrings and silver heels.\n\nOrder now"
+  },
+  {
    "id": 15,
    "name": "Embroidered Peplum Top Palazzo Set with Neck Scarf (Ivory Gold)",
    "cat": "kurtas",
