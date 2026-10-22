@@ -58,6 +58,73 @@
  ],
  "products": [
   {
+   "id": 18,
+   "name": "Hand Embroidered Salsa Kurta Palazzo Set with Dupatta",
+   "cat": "kurtas",
+   "price": 6499,
+   "mrp": 11999,
+   "sizes": [
+    "M",
+    "L",
+    "XL",
+    "XXL"
+   ],
+   "tags": [
+    "New"
+   ],
+   "variants": [
+    {
+     "label": "Olive Green",
+     "sw": "#8c8f5e",
+     "imgs": [
+      "p18_mvjwpgax6b36",
+      "p18_mvjwpnfni8l3",
+      "p18_mvjwpsvxy22v"
+     ]
+    },
+    {
+     "label": "Antique Gold",
+     "sw": "#c9a867",
+     "imgs": [
+      "p18_mvjww98qp77l",
+      "p18_mvjwweuuct3j",
+      "p18_mvjwwlwwqhww"
+     ]
+    }
+   ],
+   "specs": [
+    [
+     "Set contents",
+     "Kurta, Palazzo, Dupatta"
+    ],
+    [
+     "Colour",
+     "Olive Green, Antique Gold"
+    ],
+    [
+     "Fabric",
+     "Pure Salsa"
+    ],
+    [
+     "Work",
+     "Heavy Hand Embroidery"
+    ],
+    [
+     "Sizes",
+     "M, L, XL, XXL"
+    ],
+    [
+     "Occasion",
+     "Wedding, Festive, Puja"
+    ],
+    [
+     "Care",
+     "Dry Clean Only"
+    ]
+   ],
+   "desc": "Understated luxury, handcrafted to perfection.\n\nElevate your festive wardrobe with this kurta set in pure salsa fabric with a soft shimmer finish. Heavy hand embroidery, a classy mandarin collar and an embroidered palazzo hem make it perfect for weddings, pujas and festive gatherings. Available in Olive Green and Antique Gold.\n\nStyle tip: Pair it with gold jhumkas and golden heels or juttis."
+  },
+  {
    "id": 17,
    "name": "Embroidered Viscose Crush Top Palazzo Set with Dupatta (Mauve)",
    "cat": "kurtas",
