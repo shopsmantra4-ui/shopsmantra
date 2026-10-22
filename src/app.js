@@ -244,7 +244,7 @@ function renderProduct(){
         <div class="specs">
           <details open><summary>Product details</summary><p>${p.desc}</p><dl>${p.specs.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}<dt>Sold by</dt><dd>Shopsmantra LLP</dd></dl></details>
           <details><summary>${p.group==='accessories'?'Care':isJ?'Jewellery care':'Wash care'}</summary><p>${isJ?'Keep away from water, perfume and sweat. Store in a dry pouch and wipe gently with a soft dry cloth after use.':'Dry clean recommended for the first wash. After that, hand wash separately in cold water, dry in shade and iron on low heat.'}</p></details>
-          <details><summary>Delivery & payment</summary><p>Order on WhatsApp. We share the payment and delivery details with you in the chat. Free shipping on orders above ₹${FREE_SHIP_ABOVE}. Delivery time and return details are confirmed with your order on WhatsApp.</p></details>
+          <details><summary>Delivery & payment</summary><p>Order on WhatsApp. We share the payment and delivery details with you in the chat. Free shipping on orders above ₹${FREE_SHIP_ABOVE}. Delivered in 3–7 days across India. Easy 7-day returns with free return shipping.</p></details>
         </div>
       </div>
     </div>
@@ -450,7 +450,7 @@ function checkout(){
 
 const INFO={
   order:['How to Order','Add products to your bag and go to checkout. Fill in your delivery address. When you tap "Place order on WhatsApp", your full order opens in WhatsApp. Send it to us and we will confirm availability, delivery time and payment details in the chat.'],
-  ship:['Shipping & Returns',`Shipping is free on orders above ₹${FREE_SHIP_ABOVE}; below that a flat ₹${SHIP_FEE} applies. We confirm the delivery date for your pincode on WhatsApp when you order. For returns or exchanges, message us on WhatsApp with your order number and a photo of the product.`],
+  ship:['Shipping & Returns',`Shipping is free on orders above ₹${FREE_SHIP_ABOVE}; below that a flat ₹${SHIP_FEE} applies. Orders are packed in 1–2 days and delivered in 3–7 days across India. We confirm the delivery date for your pincode on WhatsApp when you order. Returns: you can return a product within 7 days of delivery, and return shipping is free. Message us on WhatsApp with your order number and a photo of the product, and we will arrange the pickup or share the return address.`],
   size:['Size Help','Our lehenga cholis are fully stitched and currently come in L and XL. If you are unsure which size fits you, send us your bust and waist measurements on WhatsApp and we will suggest the right one. Bangles, anklets and hair accessories are free size.']
 };
 function info(k){const [t,b]=INFO[k];show(`<div class="wrap" style="max-width:760px;padding-block:20px 60px"><div class="crumbs"><button data-go="home">Home</button><span>/</span><span>${t}</span></div><h1 class="display" style="font-size:34px;margin:6px 0 14px">${t}</h1><p style="font-size:16px">${b}</p><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px"><a class="btn pri" href="${waLink('Hi ShopsMantra, I have a question.')}" target="_blank" rel="noopener">Ask on WhatsApp</a><button class="btn out" data-shop="all">Shop now</button></div></div>`,'')}
